@@ -26,6 +26,12 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
 
+    // 출타 기간
+    duration: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+    },
+
     // 비고, 휴가추가설명
     comment: {
       type: DataTypes.STRING(255),
@@ -35,7 +41,7 @@ module.exports = function (sequelize, DataTypes) {
 
   records.associate = function (models) {
     records.belongsTo(models.members, {
-      foreignKey: 'unitId',
+      foreignKey: 'memberId',
       onDelete: 'CASCADE', // 부대원이 삭제되면, 그와 연관된 출타기록 삭제
       // 군번이 변경될일은 없기에 onUpdate는 생략
     })

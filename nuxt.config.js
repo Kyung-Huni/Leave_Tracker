@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Leave_Tracker',
@@ -13,6 +13,8 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
+
+  mode: 'universal',
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],

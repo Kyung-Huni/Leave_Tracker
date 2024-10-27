@@ -2,8 +2,8 @@ module.exports = function (sequelize, DataTypes) {
   var members = sequelize.define(
     'members',
     {
-      // 군번
-      unitId: {
+      // Id
+      id: {
         type: DataTypes.INTEGER(11),
         primaryKey: true,
         allowNull: false,
