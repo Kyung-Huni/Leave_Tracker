@@ -17,6 +17,7 @@ router.post('/addInfo', async (req, res) => {
         leaveType,
         duration,
         details,
+        comments,
       } = report
 
       const member = await members.findOne({
@@ -30,15 +31,40 @@ router.post('/addInfo', async (req, res) => {
         throw new Error(`User ${name} Not Found`)
       }
 
-      const id = member.id
-
-      await records.create({
-        departureDate: departureDate,
-        returnDate: returnDate,
-        leaveType: leaveType,
-        duration: duration,
-        memberId: id,
+      // 중복된 데이터가 있는지 검색
+      const existingRecord = await records.findOne({
+        where: {
+          departureDate,
+          returnDate,
+          memberId: member.id,
+        },
       })
+
+      // 중복된 데이터가 있을 경우 추가하지 않음
+      if (existingRecord) {
+        return null
+      }
+
+      // 휴가, 외박에 따라 다른 데이터 삽입
+      if (leaveType === '휴가') {
+        await records.create({
+          departureDate: departureDate,
+          returnDate: returnDate,
+          leaveType: leaveType,
+          duration: duration,
+          details: details,
+          comment: comments,
+          memberId: member.id,
+        })
+      } else if (leaveType === '특이외박' || leaveType === '근무외박') {
+        await records.create({
+          departureDate: departureDate,
+          returnDate: returnDate,
+          leaveType: leaveType,
+          comment: comments,
+          memberId: member.id,
+        })
+      }
     })
 
     await Promise.all(recordPromisses)

@@ -20,7 +20,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
 
-    // 휴가종류 (연가, 위로, 포상)
+    // 출타종류 (외박, 휴가)
     leaveType: {
       type: DataTypes.STRING(50),
       allowNull: false,
@@ -29,10 +29,16 @@ module.exports = function (sequelize, DataTypes) {
     // 출타 기간
     duration: {
       type: DataTypes.INTEGER(11),
-      allowNull: false,
+      allowNull: true,
     },
 
-    // 비고, 휴가추가설명
+    // 휴가종류 (연가, 위로, 포상)
+    details: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
+
+    // 비고, 휴가추가설명, 특이외박사유
     comment: {
       type: DataTypes.STRING(255),
       allowNull: true,

@@ -6,14 +6,22 @@ module.exports = function (sequelize, DataTypes) {
       id: {
         type: DataTypes.INTEGER(11),
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false,
-        unique: true, // 인덱싱 추가
       },
+
+      // 계급
+      rank: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+      },
+
       // 이름
       name: {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
+
       // 소속 대대, 중대
       unit: {
         type: DataTypes.STRING(255),

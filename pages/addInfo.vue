@@ -23,7 +23,7 @@ function extractInfo(reportText) {
   const reportRegex =
     // 월.일(요일)-월.일(요일) 계급 이름 출타종류/휴가일수+일/휴가종류
     // 전역플래그 g를 통해 여러사람의 데이터를 추출하여 배열로 반환
-    /(\d+\.\d+\([가-힣]+\))-(\d+\.\d+\([가-힣]+\))\s+(\S+)\s+(\S+)\s+(\S+)\/(\d+)일\/(\S+)/g
+    /(\d+\.\d+\([가-힣]+\))-(\d+\.\d+\([가-힣]+\))\s+(\S+)\s+(\S+)\s+(\S+)\/(\d+)일\/(\S+)(?:\s*-\s*(.+))?/g
 
   var match
   while ((match = reportRegex.exec(reportText)) !== null) {
@@ -32,10 +32,14 @@ function extractInfo(reportText) {
       returnDate: match[2], // 복귀일
       rank: match[3], // 계급
       name: match[4], // 이름
-      leaveType: match[5], // 출타 종류
-      duration: match[6], // 기간
-      details: match[7], // 휴가 종류
+      leaveType: match[5], // 출타 종류, 여기까지 필수 항목
+      duration: match[6] || null, // 기간 (휴가일경우)
+      details: match[7] || null, // 휴가 종류 (휴가일경우)
+      comments: match[8] || null, // 추가 설명 (휴가설명 및 특이외박 사유)
     }
+
+    console.log(report)
+
     reports.push(report)
   }
 
