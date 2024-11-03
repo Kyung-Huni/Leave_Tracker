@@ -1,8 +1,45 @@
 const express = require('express')
 const router = express.Router()
+const { Op } = require('sequelize')
 
 const { records } = require('../models')
 const { members } = require('../models')
+
+router.get('/', async (req, res) => {
+  const { start, end } = req.query
+
+  try {
+    const filteredRecords = await records.findAll({
+      where: {
+        [Op.or]: [
+          {
+            departureDate: {
+              [Op.between]: [start, end],
+            },
+          },
+          {
+            returnDate: {
+              [Op.between]: [start, end],
+            },
+          },
+        ],
+      },
+      include: [
+        {
+          model: members,
+          attributes: ['rank', 'name'],
+        },
+      ],
+    })
+
+    res.status(200).json(filteredRecords)
+  } catch (error) {
+    console.error('Error fetching records:', error)
+    res
+      .status(500)
+      .json({ message: 'Failed to retrieve records', error: error.message })
+  }
+})
 
 router.post('/addInfo', async (req, res) => {
   const { reports } = req.body

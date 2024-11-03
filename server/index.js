@@ -10,6 +10,22 @@ const server = http.createServer(app)
 const config = require('../nuxt.config')
 const isDev = process.env.NODE_ENV !== 'production'
 
+const session = require('express-session')
+const passport = require('./utils/passport')
+
+app.use(
+  session({
+    secret: '1234',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+    },
+  })
+)
+app.use(passport.initialize())
+app.use(passport.session())
+
 // JSON 요청 본문 파싱 미들웨어
 app.use(express.json())
 // URL-encoded 요청 본문 파싱 미들웨어

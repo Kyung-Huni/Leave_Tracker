@@ -18,6 +18,15 @@
 </template>
 
 <script>
+// 기본 연도를 추가하는 함수
+function addDefaultYear(dateStr) {
+  if (dateStr.length <= 8) {
+    // "MM-DD" 형태라면
+    return `2024-${dateStr}`
+  }
+  return dateStr // 연도가 이미 포함된 경우
+}
+
 function extractInfo(reportText) {
   const reports = []
   const reportRegex =
@@ -28,8 +37,8 @@ function extractInfo(reportText) {
   var match
   while ((match = reportRegex.exec(reportText)) !== null) {
     const report = {
-      departureDate: match[1], // 출발일
-      returnDate: match[2], // 복귀일
+      departureDate: addDefaultYear(match[1]), // 출발일
+      returnDate: addDefaultYear(match[2]), // 복귀일
       rank: match[3], // 계급
       name: match[4], // 이름
       leaveType: match[5], // 출타 종류, 여기까지 필수 항목

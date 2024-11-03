@@ -5,12 +5,24 @@
     <div class="submit">
       <form @submit.prevent="registry">
         <label for="계급">계급</label>
-        <input type="text" v-model="rank" />
+        <select v-model="rank">
+          <option
+            v-for="cate in rankCategories"
+            v-bind:value="cate"
+            :key="cate"
+          >
+            {{ cate }}
+          </option>
+        </select>
         <label for="이름">이름</label>
         <input type="text" v-model="name" />
         <label for="소속">소속</label>
         <select v-model="unit">
-          <option v-for="cate in categories" v-bind:value="cate" :key="cate">
+          <option
+            v-for="cate in unitCategories"
+            v-bind:value="cate"
+            :key="cate"
+          >
             {{ cate }}
           </option>
         </select>
@@ -24,14 +36,15 @@
 export default {
   data() {
     return {
-      categories: [
+      unitCategories: [
         '501 본부중대',
         '3정보 본부중대',
         '3정보 A/B',
         '3정보 찰리',
         '524정보대대',
       ],
-      rank: '',
+      rankCategories: ['이병', '일병', '상병', '병장'],
+      rank: '이병',
       name: '',
       unit: '',
     }
