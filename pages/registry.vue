@@ -49,11 +49,12 @@ export default {
       unit: '',
     }
   },
+
   methods: {
     async registry() {
       try {
         const response = await fetch(
-          'http://localhost:3000/api/v1.0/admin/registry',
+          'http://localhost:3000/api/v1.0/members/registry',
           {
             method: 'POST',
             headers: {
@@ -69,7 +70,7 @@ export default {
 
         if (response.ok) {
           const result = await response.json()
-          console.log('Successfully Added: ', result)
+          alert('Successfully Added: ', result)
         } else {
           console.error('Adding Failed')
         }

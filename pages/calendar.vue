@@ -1,7 +1,7 @@
 <template>
   <div>
     <FullCalendar
-      ref="calendar"
+      :events="events"
       :options="calendarOptions"
       @dateClick="handleDateClick"
       @eventClick="handleEventClick"
@@ -24,7 +24,6 @@ export default {
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin],
         initialView: 'dayGridMonth',
-        events: this.events,
         eventClick: (info) => {
           const leaveType = info.event.extendedProps.leaveType
           const details = info.event.extendedProps.details
@@ -39,14 +38,10 @@ export default {
         },
         eventDidMount: (info) => {
           // 시간 부분을 숨기고 제목만 보여줌
-          info.el.querySelector('.fc-event-time').style.display = 'none'
-          info.el.querySelector(
-            '.fc-event-title'
-          ).innerText = `${info.event.title}`
+          const timeElement = info.el.querySelector('.fc-event-time')
+          if (timeElement) timeElement.style.display = 'none' // 시간을 숨김
         },
       },
-      calendarStart: '2024-11-01',
-      calendarEnd: '2024-11-30',
     }
   },
 
@@ -56,19 +51,30 @@ export default {
 
   methods: {
     async fetch() {
-      const response = await this.$axios.get('/records', {
-        params: {
-          start: this.calendarStart,
-          end: this.calendarEnd,
-        },
-      })
+      const response = await this.$axios.get(
+        'http://localhost:3000/api/v1.0/records',
+        {
+          params: {
+            start: '2024-10-20',
+            end: '2024-11-30',
+          },
+        }
+      )
+      console.log('API response:', response.data) // 응답 데이터 로그
 
       this.events = response.data.map((record) => {
+        const startDate =
+          new Date(record.departureDate).toISOString().slice(0, 10) +
+          'T00:00:00'
+        const endDate =
+          new Date(record.returnDate).toISOString().slice(0, 10) + 'T23:59:59'
+
         return {
+          id: record.id,
           title: `${record.member.rank} ${record.member.name}`,
-          start: record.departureDate.split('T')[0] + 'T00:00:00', // 시작일
-          end: record.returnDate.split('T')[0] + 'T23:59:59', // 종료일
-          color: record.color || 'blue',
+          start: startDate,
+          end: endDate,
+          color: record.color || 'green',
           extendedProps: {
             leaveType: record.leaveType || '정보 없음',
             details: record.details || '정보 없음',
@@ -76,6 +82,7 @@ export default {
         }
       })
 
+      console.log(this.events)
       this.$set(this.calendarOptions, 'events', this.events)
     },
 
@@ -86,7 +93,6 @@ export default {
           title: title,
           start: info.dateStr,
         })
-        this.$set(this.calendarOptions, 'events', this.events)
       }
     },
     handleEventClick(info) {

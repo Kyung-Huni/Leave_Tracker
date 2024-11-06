@@ -7,6 +7,7 @@ const { members } = require('../models')
 
 router.get('/', async (req, res) => {
   const { start, end } = req.query
+  console.log('Received query params:', { start, end }) // 추가된 부분
 
   try {
     const filteredRecords = await records.findAll({

@@ -1,7 +1,5 @@
 const express = require('express')
 const router = express.Router()
-
-const { users } = require('../models')
 const passport = require('passport')
 
 router.post(
@@ -13,15 +11,22 @@ router.post(
 )
 
 router.get('/signin/success', (req, res) => {
-  res.status(200).json({})
+  res.redirect('/')
 })
 
 router.get('/signin/fail', (req, res) => {
-  res.status(204).json({})
+  res.status(401).json({})
 })
 
 router.get('/session-check', (req, res) => {
-  res.status(200).json(req.user)
+  if (req.session && req.session.user) {
+    res.json({
+      isAuthenticated: true,
+      user: req.session.user,
+    })
+  } else {
+    res.json({ isAuthenticated: false })
+  }
 })
 
 module.exports = router

@@ -6,9 +6,9 @@ module.exports = new LocalStrategy(
   {
     usernameField: 'uid',
     passwordField: 'password',
-    passReqToCallback: true,
+    passReqToCallback: false,
   },
-  function (req, userId, password, done) {
+  function (userId, password, done) {
     if (!userId || !password) return done(null, false)
 
     users
@@ -18,7 +18,7 @@ module.exports = new LocalStrategy(
       })
       .then((result) => {
         if (!result) {
-          done(null, false)
+          return done(null, false)
         } else {
           if (result.password == password) {
             done(null, {
@@ -27,7 +27,7 @@ module.exports = new LocalStrategy(
               status: result['status'],
             })
           } else {
-            done(null, false)
+            return done(null, false)
           }
         }
       })

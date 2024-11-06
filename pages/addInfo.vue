@@ -27,18 +27,30 @@ function addDefaultYear(dateStr) {
   return dateStr // 연도가 이미 포함된 경우
 }
 
+function parseCustomDateFormat(dateString) {
+  // '10.27(일)' -> '2024-10-27'로 변환
+  const [monthDay, dayName] = dateString.split('(')
+  const [month, day] = monthDay.split('.').map(Number)
+
+  // 기본 연도를 2024로 설정
+  return `2024-${String(month).padStart(2, '0')}-${String(day).padStart(
+    2,
+    '0'
+  )}`
+}
+
 function extractInfo(reportText) {
   const reports = []
   const reportRegex =
     // 월.일(요일)-월.일(요일) 계급 이름 출타종류/휴가일수+일/휴가종류
     // 전역플래그 g를 통해 여러사람의 데이터를 추출하여 배열로 반환
-    /(\d+\.\d+\([가-힣]+\))-(\d+\.\d+\([가-힣]+\))\s+(\S+)\s+(\S+)\s+(\S+)\/(\d+)일\/(\S+)(?:\s*-\s*(.+))?/g
+    /(\d+\.\d+\([가-힣]+\))-(\d+\.\d+\([가-힣]+\))\s+(\S+)\s+(\S+)\s+([^\s/]+)(?:\/(\d+)일)?(?:\/(\S+))?(?:\s*-\s*(.*))?/g
 
   var match
   while ((match = reportRegex.exec(reportText)) !== null) {
     const report = {
-      departureDate: addDefaultYear(match[1]), // 출발일
-      returnDate: addDefaultYear(match[2]), // 복귀일
+      departureDate: parseCustomDateFormat(match[1]), // 출발일
+      returnDate: parseCustomDateFormat(match[2]), // 복귀일
       rank: match[3], // 계급
       name: match[4], // 이름
       leaveType: match[5], // 출타 종류, 여기까지 필수 항목

@@ -1,6 +1,7 @@
 <template>
   <section class="signin">
     <div class="container">
+      <h1 v-if="message">{{ message }}</h1>
       <form @submit.prevent="signin">
         <label for="아이디">아이디</label>
         <input type="text" v-model="uid" />
@@ -19,18 +20,15 @@ export default {
     return {
       uid: '',
       password: '',
+      message: '',
     }
   },
-
   mounted() {
-    if (this.$store.state.users.isAuthenticated) {
-      this.$nuxt.$router.replace({ path: '/' }) // 이미 인증된 경우 홈으로 리다이렉션
-    }
+    this.message = this.$route.query.login || ''
   },
-
   methods: {
     login() {
-      this.$store.commit('users/login')
+      this.$store.commit('users/setAuthenticated', true)
     },
 
     async signin() {
@@ -41,10 +39,10 @@ export default {
           password: this.password,
         })
 
-        if (response.status === 200) {
-          this.$store.commit('users/login', response.data.user) // 사용자 정보 전달
-          this.$router.replace({ path: '/' })
-        } else {
+        if (response.status == 200) {
+          this.login()
+          this.$nuxt.$router.replace({ path: '/' })
+        } else if (data.status == 204) {
           alert('잘못된 정보입니다.')
         }
       } catch (error) {

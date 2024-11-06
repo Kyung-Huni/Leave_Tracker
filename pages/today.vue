@@ -3,3 +3,7 @@
     <h1>Summarize today's info!</h1>
   </section>
 </template>
+
+<script>
+export default {}
+</script>
