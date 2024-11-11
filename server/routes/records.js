@@ -35,7 +35,65 @@ router.get('/', async (req, res) => {
 
     res.status(200).json(filteredRecords)
   } catch (error) {
-    console.error('Error fetching records:', error)
+    console.error('Error fetching records: ', error)
+    res
+      .status(500)
+      .json({ message: 'Failed to retrieve records', error: error.message })
+  }
+})
+
+router.get('/today', async (req, res) => {
+  const { todayDate } = req.query
+
+  const todayDateObj = new Date(todayDate)
+
+  try {
+    const onLeaveResult = await records.findAndCountAll({
+      where: {
+        [Op.and]: [
+          {
+            departureDate: {
+              [Op.lte]: todayDateObj,
+            },
+          },
+          {
+            returnDate: {
+              [Op.gt]: todayDateObj,
+            },
+          },
+          {
+            leaveType: '휴가',
+          },
+        ],
+      },
+    })
+
+    const onPassResult = await records.findAndCountAll({
+      where: {
+        [Op.and]: [
+          {
+            departureDate: {
+              [Op.gte]: todayDateObj,
+            },
+          },
+          {
+            returnDate: {
+              [Op.lt]: todayDateObj,
+            },
+          },
+          {
+            leaveType: ['외박', '특이외박', '근무외박'],
+          },
+        ],
+      },
+    })
+
+    return res.json({
+      onLeaveResult: onLeaveResult.count,
+      onPassResult: onPassResult.count,
+    })
+  } catch (error) {
+    console.error('Error fetching records: ', error)
     res
       .status(500)
       .json({ message: 'Failed to retrieve records', error: error.message })

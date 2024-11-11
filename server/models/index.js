@@ -8,6 +8,7 @@ const password = '1234'
 const options = {
   host: '127.0.0.1',
   dialect: 'mysql',
+  timezone: '+09:00',
 }
 
 var sequelize = new Sequelize(databaseName, user, password, options)

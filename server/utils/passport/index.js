@@ -1,24 +1,20 @@
-const passport = require("passport");
-const local = require("./local");
-const { users } = require("../../models");
+const passport = require('passport')
+const local = require('./local')
 
-passport.serializeUser(function (user, done) {
-  done(null, user.uid); // 세션에 사용자 uid만 저장
-});
+const { users } = require('../../models')
 
-passport.deserializeUser(function (uid, done) {
-  // 세션에서 uid를 받아서 다시 데이터베이스에서 사용자 조회
-  users
-    .findOne({ where: { uid: uid } })
-    .then((user) => {
-      if (!user) {
-        return done(new Error("User not found"));
-      }
-      done(null, user); // 조회된 사용자 객체를 req.user에 전달
-    })
-    .catch((err) => done(err));
-});
+module.exports = () => {
+  passport.serializeUser((user, done) => {
+    done(null, user.id) // 세션에 사용자 uid만 저장
+  })
 
-passport.use(local);
+  passport.deserializeUser((id, done) => {
+    // 세션에서 uid를 받아서 다시 데이터베이스에서 사용자 조회
+    users
+      .findOne({ where: { id } })
+      .then((user) => done(null, user))
+      .catch((err) => done(err))
+  })
 
-module.exports = passport;
+  local()
+}

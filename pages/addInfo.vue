@@ -48,6 +48,14 @@ function extractInfo(reportText) {
 
   var match
   while ((match = reportRegex.exec(reportText)) !== null) {
+    // const color = ''
+
+    // if (match[5] == '휴가') {
+    //   color = 'blue'
+    // } else {
+    //   color = 'green'
+    // }
+
     const report = {
       departureDate: parseCustomDateFormat(match[1]), // 출발일
       returnDate: parseCustomDateFormat(match[2]), // 복귀일
@@ -73,6 +81,9 @@ export default {
       reportContent: '', // 보고 내용
     }
   },
+
+  middleware: 'auth',
+
   methods: {
     // 보고를 서버API로 보내는 메소드
     async submitReport() {

@@ -4,11 +4,6 @@ const router = express.Router()
 const { members, records, users } = require('../models')
 
 router.get('/', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.send(`Hello ${req.user.uid}`)
-  } else {
-    res.redirect('/signin')
-  }
   var page = req.query.page || 0
   var limit = 5
 

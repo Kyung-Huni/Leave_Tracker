@@ -43,6 +43,12 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+
+    // 달력에 표시할 색깔
+    color: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
   })
 
   records.associate = function (models) {

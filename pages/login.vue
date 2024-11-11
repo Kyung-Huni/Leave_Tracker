@@ -1,12 +1,13 @@
 <template>
   <section class="signin">
     <div class="container">
-      <h1 v-if="message">{{ message }}</h1>
-      <form @submit.prevent="signin">
-        <label for="아이디">아이디</label>
-        <input type="text" v-model="uid" />
-        <label for="패스워드">패스워드</label>
-        <input type="password" v-model="password" />
+      <p v-if="message">{{ message }}</p>
+
+      <form @submit.prevent="login">
+        <label for="uid">아이디</label>
+        <input type="text" id="uid" v-model="uid" />
+        <label for="password">패스워드</label>
+        <input type="password" id="password" v-model="password" />
         <button type="submit">로그인</button>
       </form>
     </div>
@@ -20,19 +21,13 @@ export default {
     return {
       uid: '',
       password: '',
-      message: '',
+      message: this.$route.query.message || '',
     }
   },
-  mounted() {
-    this.message = this.$route.query.login || ''
-  },
-  methods: {
-    login() {
-      this.$store.commit('users/setAuthenticated', true)
-    },
 
-    async signin() {
-      const url = 'http://localhost:3000/api/v1.0/users/signin'
+  methods: {
+    async login() {
+      const url = 'http://localhost:3000/api/v1.0/auth/login'
       try {
         const response = await axios.post(url, {
           uid: this.uid,
@@ -40,8 +35,10 @@ export default {
         })
 
         if (response.status == 200) {
-          this.login()
-          this.$nuxt.$router.replace({ path: '/' })
+          this.$store.commit('setAuthentication', true)
+
+          const redirectPath = this.$route.query.redirect || '/'
+          this.$nuxt.$router.replace(redirectPath)
         } else if (data.status == 204) {
           alert('잘못된 정보입니다.')
         }

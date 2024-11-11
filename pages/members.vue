@@ -4,7 +4,7 @@
 
     <div class="filter">
       <label for="unit">소속 중대/대대 선택:</label>
-      <select v-model="selectedUnit" @change="filterByUnit">
+      <select id="unit" v-model="selectedUnit" @change="filterByUnit">
         <option value="">모두</option>
         <option v-for="unit in units" :key="unit" :value="unit">
           {{ unit }}
@@ -66,6 +66,7 @@ export default {
 
   async mounted() {
     var data = await axios.get('http://localhost:3000/api/v1.0/members')
+
     ;(this.members = data.data.member),
       (this.totalCount = data.data.totalCount),
       (this.limit = data.data.limit),
@@ -85,6 +86,8 @@ export default {
         : this.members
     },
   },
+
+  middleware: 'auth',
 
   methods: {
     async getPage(page) {

@@ -50,6 +50,8 @@ export default {
     }
   },
 
+  middleware: 'auth',
+
   methods: {
     async registry() {
       try {

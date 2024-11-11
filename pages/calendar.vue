@@ -49,6 +49,8 @@ export default {
     await this.fetch() // 컴포넌트가 마운트될 때 fetch 호출
   },
 
+  middleware: 'auth',
+
   methods: {
     async fetch() {
       const response = await this.$axios.get(

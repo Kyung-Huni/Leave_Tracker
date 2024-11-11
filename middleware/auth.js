@@ -1,20 +1,11 @@
 // middleware/auth.js
-module.exports = async function ({ store, redirect, route, app }) {
-  try {
-    const response = await $axios.get(
-      'http://localhost:3000/api/v1.0/users/session-check'
+export default function ({ store, redirect, route }) {
+  // 로그인이 되어 있지 않으면 로그인 페이지로 리다이렉트
+  if (!store.state.isAuthenticated) {
+    return redirect(
+      `/login?message=${encodeURIComponent(
+        '로그인이 필요합니다.'
+      )}&redirect=${encodeURIComponent(route.path)}`
     )
-    if (response.data.isAuthenticated) {
-      store.commit('SET_USER', response.data.user)
-    } else {
-      return redirect('/signin')
-    }
-  } catch (error) {
-    console.error('Authentication check failed: ', error)
-    return redirect('/signin')
-  }
-
-  if (store.state.users.isAuthenticated && route.path === '/signin') {
-    return redirect('/') // 이미 인증된 사용자가 로그인 페이지에 접근할 경우 홈으로 리다이렉션
   }
 }

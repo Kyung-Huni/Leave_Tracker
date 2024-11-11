@@ -1,6 +1,7 @@
 const express = require('express')
 const { loadNuxt, build } = require('nuxt')
 const routes = require('./routes')
+const passportConfig = require('./utils/passport')
 
 const app = express()
 
@@ -11,7 +12,9 @@ const config = require('../nuxt.config')
 const isDev = process.env.NODE_ENV !== 'production'
 
 const session = require('express-session')
-const passport = require('./utils/passport')
+const passport = require('passport')
+
+passportConfig() // 패스포트 설정
 
 app.use(
   session({
@@ -21,6 +24,7 @@ app.use(
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
+      secure: false,
     },
   })
 )
