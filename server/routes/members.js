@@ -4,22 +4,26 @@ const router = express.Router()
 const { members, records, users } = require('../models')
 
 router.get('/', (req, res) => {
-  var page = req.query.page || 0
-  var limit = 5
-
   members
     .findAndCountAll({
       raw: true,
-      limit: limit,
-      offset: page * limit,
     })
     .then((result) => {
+      const unitCounts = result.rows.reduce((acc, member) => {
+        const unit = member.unit
+        acc[unit] = (acc[unit] || 0) + 1
+        return acc
+      }, {})
+
       res.json({
         totalCount: result.count,
         member: result.rows,
-        limit: limit,
-        currentPage: page,
+        unitCounts,
       })
+    })
+    .catch((error) => {
+      console.error(error)
+      res.status(500).json({ error: '서버 오류' })
     })
 })
 

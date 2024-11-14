@@ -18,22 +18,15 @@
 </template>
 
 <script>
-// 기본 연도를 추가하는 함수
-function addDefaultYear(dateStr) {
-  if (dateStr.length <= 8) {
-    // "MM-DD" 형태라면
-    return `2024-${dateStr}`
-  }
-  return dateStr // 연도가 이미 포함된 경우
-}
-
 function parseCustomDateFormat(dateString) {
   // '10.27(일)' -> '2024-10-27'로 변환
   const [monthDay, dayName] = dateString.split('(')
   const [month, day] = monthDay.split('.').map(Number)
 
+  const year = month < 11 ? 2025 : 2024
+
   // 기본 연도를 2024로 설정
-  return `2024-${String(month).padStart(2, '0')}-${String(day).padStart(
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(
     2,
     '0'
   )}`
@@ -47,15 +40,8 @@ function extractInfo(reportText) {
     /(\d+\.\d+\([가-힣]+\))-(\d+\.\d+\([가-힣]+\))\s+(\S+)\s+(\S+)\s+([^\s/]+)(?:\/(\d+)일)?(?:\/(\S+))?(?:\s*-\s*(.*))?/g
 
   var match
+
   while ((match = reportRegex.exec(reportText)) !== null) {
-    // const color = ''
-
-    // if (match[5] == '휴가') {
-    //   color = 'blue'
-    // } else {
-    //   color = 'green'
-    // }
-
     const report = {
       departureDate: parseCustomDateFormat(match[1]), // 출발일
       returnDate: parseCustomDateFormat(match[2]), // 복귀일
@@ -114,3 +100,82 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+/* 페이지 전체 배경 */
+.addInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #e0f7fa; /* 페이지 배경색 */
+
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+/* 타이틀 스타일 */
+.addInfo h1 {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* 입력 박스 */
+.input {
+  width: 100%;
+  max-width: 600px; /* 최대 너비 설정 */
+  background: #ffffff; /* 흰색 배경 */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+  box-sizing: border-box; /* 패딩과 테두리를 포함한 박스 크기 설정 */
+}
+
+.input label {
+  display: block;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.input textarea {
+  width: 100%; /* 부모 컨테이너의 너비를 100%로 설정 */
+  height: 150px;
+  padding: 15px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  resize: none; /* 크기 조절 불가 */
+  background-color: #fafafa; /* 연한 회색 배경 */
+  color: #333;
+  font-family: Arial, sans-serif;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box; /* 패딩을 포함한 너비 계산 */
+}
+
+.input textarea:focus {
+  outline: none;
+  border-color: #5c6bc0; /* 파란색 테두리 */
+}
+
+.input button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  font-size: 1.1rem;
+  background-color: #5c6bc0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.input button:hover {
+  background-color: #3f51b5; /* 버튼 색상 변화 */
+}
+</style>

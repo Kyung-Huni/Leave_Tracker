@@ -5,6 +5,14 @@ const { Op } = require('sequelize')
 const { records } = require('../models')
 const { members } = require('../models')
 
+const unitColors = {
+  '501 본부중대': '#6FA3EF', // 파란색
+  '3정보 본부중대': '#90C290', // 올리브 그린
+  '3정보 A/B': '#FFC082', // 연주황색
+  '3정보 찰리': '#B89FCF', // 보라색
+  '524정보대대': '#F7B2AD', // 코랄 핑크
+}
+
 router.get('/', async (req, res) => {
   const { start, end } = req.query
   console.log('Received query params:', { start, end }) // 추가된 부분
@@ -28,7 +36,7 @@ router.get('/', async (req, res) => {
       include: [
         {
           model: members,
-          attributes: ['rank', 'name'],
+          attributes: ['rank', 'name', 'unit'],
         },
       ],
     })
@@ -127,6 +135,8 @@ router.post('/addInfo', async (req, res) => {
         throw new Error(`User ${name} Not Found`)
       }
 
+      const color = unitColors[member.unit] || 'grey' // unitColors에 없는 경우 기본 색상은 grey로 설정
+
       // 중복된 데이터가 있는지 검색
       const existingRecord = await records.findOne({
         where: {
@@ -150,6 +160,7 @@ router.post('/addInfo', async (req, res) => {
           duration: duration,
           details: details,
           comment: comments,
+          color: color,
           memberId: member.id,
         })
       } else if (leaveType === '특이외박' || leaveType === '근무외박') {
@@ -158,6 +169,7 @@ router.post('/addInfo', async (req, res) => {
           returnDate: returnDate,
           leaveType: leaveType,
           comment: comments,
+          color: color,
           memberId: member.id,
         })
       }

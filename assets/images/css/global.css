@@ -1,0 +1,26 @@
+/* assets/css/global.css */
+html,
+body {
+  height: 100%; /* 화면 높이를 100%로 설정 */
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7; /* 배경 색 */
+  color: #333;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* body가 100% 화면 높이를 채우도록 설정 */
+}
+
+main {
+  flex-grow: 1; /* main 영역이 화면에서 남은 공간을 차지하도록 설정 */
+  display: flex;
+  flex-direction: column;
+}
