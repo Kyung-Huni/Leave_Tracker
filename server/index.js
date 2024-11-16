@@ -13,7 +13,7 @@ const config = require('../nuxt.config')
 const isDev = process.env.NODE_ENV !== 'production'
 
 const session = require('express-session')
-const RedisStore = require('connect-redis')(session)
+const RedisStore = require('connect-redis').default
 const redis = require('redis')
 
 const client = redis.createClient({
