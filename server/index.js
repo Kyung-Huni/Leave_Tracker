@@ -24,10 +24,6 @@ app.use(cors(corsOptions))
 
 passportConfig() // 패스포트 설정
 
-// passport-local 미들웨어 등록
-app.use(passport.initialize())
-app.use(passport.session())
-
 app.use(
   session({
     secret: process.env.SECRET,
@@ -40,6 +36,10 @@ app.use(
     },
   })
 )
+
+// passport-local 미들웨어 등록
+app.use(passport.initialize())
+app.use(passport.session())
 
 // JSON 요청 본문 파싱 미들웨어
 app.use(express.json())
