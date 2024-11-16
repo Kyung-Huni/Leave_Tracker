@@ -34,7 +34,7 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.4",
+    "sequelize": "^6.37.5",
     "vercel-builder": "^0.0.2",
     "vue": "^2.7.10",
     "vue-server-renderer": "^2.7.10",
