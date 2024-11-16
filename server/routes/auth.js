@@ -8,7 +8,10 @@ router.post(
   passport.authenticate('local', {
     successRedirect: '/api/auth/login/success',
     failureRedirect: '/api/auth/login/fail',
-  })
+  }),
+  (req, res) => {
+    req.session.user = req.user
+  }
 )
 
 router.get('/login/success', (req, res) => {
