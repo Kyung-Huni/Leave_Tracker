@@ -19,6 +19,7 @@ const corsOptions = {
   origin: 'https://leave-tracker-livid.vercel.app',
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // 쿠키 전송을 허용
 }
 app.use(cors(corsOptions))
 

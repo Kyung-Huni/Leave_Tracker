@@ -18,6 +18,7 @@ router.get('/login/success', (req, res) => {
 router.get('/login/fail', (req, res) => {
   res.status(204).json({})
 })
+
 //* 로그아웃 (isLoggedIn 상태일 경우)
 router.get('/logout', isLoggedIn, (req, res) => {
   // req.user (사용자 정보가 안에 들어있다. 당연히 로그인되어있으니 로그아웃하려는 거니까)
