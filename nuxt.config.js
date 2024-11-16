@@ -24,6 +24,12 @@ module.exports = {
     ],
   },
 
+  target: 'server', // SSR 방식으로 설정
+  ssr: true, // 서버 사이드 렌더링 활성화
+  env: {
+    // 필요한 환경 변수 설정 (선택 사항)
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
@@ -38,21 +44,4 @@ module.exports = {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
   ],
-
-  target: 'server', // SSR 방식으로 설정
-  ssr: true, // 서버 사이드 렌더링 활성화
-  buildModules: ['@nuxt/vercel-builder'], // Vercel 빌드 모듈 추가
-  env: {
-    // 필요한 환경 변수 설정 (선택 사항)
-  },
-
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-    webpakc: { version: 4 },
-    postcss: {
-      plugins: {
-        autoprefixer: {},
-      },
-    },
-  },
 }

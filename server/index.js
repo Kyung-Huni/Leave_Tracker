@@ -42,16 +42,16 @@ async function start() {
   // Nuxt 초기화
   const nuxt = await loadNuxt(isDev ? 'dev' : 'start')
 
-  // API 라우트 설정
-  app.use('/api/v1.0', routes)
-
-  // 모든 요청을 Nuxt로 전달
-  app.use(nuxt.render)
-
   // Nuxt 빌드 (개발 모드에서만 사용)
   if (isDev) {
     await build(nuxt)
   }
+
+  // API 라우트 설정
+  app.use('/api', routes)
+
+  // 모든 요청을 Nuxt로 전달
+  app.use(nuxt.render)
 
   server.listen(3000, () => {
     console.log('Server On Port : 3000')

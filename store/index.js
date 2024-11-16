@@ -13,7 +13,7 @@ export const actions = {
   async checkSession({ commit }) {
     try {
       const response = await this.$axios.get(
-        'http://localhost:3000/api/v1.0/auth/session-check'
+        'https://leave-tracker-lma6wsk5a-leekyunghuns-projects.vercel.app/api/auth/session-check'
       )
       commit('setAuthentication', response.data.isAuthenticated)
     } catch (error) {
