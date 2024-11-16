@@ -41,7 +41,11 @@ export default {
           this.$store.commit('setAuthentication', true)
 
           const redirectPath = this.$route.query.redirect || '/'
-          this.$nuxt.$router.replace(redirectPath)
+          this.$nuxt.$router
+            .push({
+              path: redirectPath,
+            })
+            .catch(() => {})
         } else if (response.status == 204) {
           alert('잘못된 정보입니다.')
         }

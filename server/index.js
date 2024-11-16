@@ -13,6 +13,16 @@ const config = require('../nuxt.config')
 const isDev = process.env.NODE_ENV !== 'production'
 
 const session = require('express-session')
+const RedisStore = require('connect-redis')(session)
+const redis = require('redis')
+
+const client = redis.createClient({
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD,
+  logErrors: true,
+})
+
 const passport = require('passport')
 
 const corsOptions = {
@@ -35,6 +45,7 @@ app.use(
       httpOnly: true,
       secure: false,
     },
+    store: new RedisStore({ client }),
   })
 )
 
