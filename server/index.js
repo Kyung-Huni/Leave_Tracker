@@ -2,6 +2,7 @@ const express = require('express')
 const { loadNuxt, build } = require('nuxt')
 const routes = require('./routes')
 const passportConfig = require('./utils/passport')
+const cors = require('cors')
 
 const app = express()
 
@@ -14,24 +15,31 @@ const isDev = process.env.NODE_ENV !== 'production'
 const session = require('express-session')
 const passport = require('passport')
 
+const corsOptions = {
+  origin: 'https://leave-tracker-livid.vercel.app',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+}
+app.use(cors(corsOptions))
+
 passportConfig() // 패스포트 설정
+
+// passport-local 미들웨어 등록
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(
   session({
-    secret: '1234',
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
-      secure: false,
+      secure: true,
     },
   })
 )
-
-// passport-local 미들웨어 등록
-app.use(passport.initialize())
-app.use(passport.session())
 
 // JSON 요청 본문 파싱 미들웨어
 app.use(express.json())
