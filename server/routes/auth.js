@@ -8,6 +8,7 @@ router.post(
   passport.authenticate('local', {
     successRedirect: '/api/auth/login/success',
     failureRedirect: '/api/auth/login/fail',
+    failureFlash: true, // 실패 시, 오류 메시지를 플래시로 전달
   })
 )
 

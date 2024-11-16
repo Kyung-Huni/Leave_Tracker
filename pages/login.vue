@@ -35,6 +35,7 @@ export default {
         const response = await axios.post(url, {
           uid: this.uid,
           password: this.password,
+          withCredentials: true,
         })
 
         if (response.status == 200) {
