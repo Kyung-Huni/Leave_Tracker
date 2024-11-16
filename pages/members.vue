@@ -49,6 +49,7 @@ export default {
 <style scoped>
 .unit-list {
   background-color: #e0f7fa; /* 페이지 배경색 */
+  height: 100vh;
   padding: 20px;
   display: flex;
   flex-direction: column;

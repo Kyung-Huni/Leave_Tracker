@@ -32,7 +32,7 @@ function parseCustomDateFormat(dateString) {
   )}`
 }
 
-function extractInfo(reportText) {
+function extractLeave(reportText) {
   const reports = []
   const reportRegex =
     // 월.일(요일)-월.일(요일) 계급 이름 출타종류/휴가일수+일/휴가종류
@@ -61,6 +61,40 @@ function extractInfo(reportText) {
   return reports
 }
 
+function extractOuting(reportText) {
+  const outingSectionMatch = reportText.match(
+    /3\. 외출신청([\s\S]*?)4\. 건강상태/
+  )
+
+  if (!outingSectionMatch) {
+    console.error('외출신청 섹션을 찾을 수 없습니다.')
+    return []
+  }
+
+  const outingSection = outingSectionMatch[1]
+
+  // 외출자 데이터를 추출하는 로직
+  const reports = [] // 파싱한 외출자 데이터
+  const outingRegex =
+    /([가-힣]+\s[가-힣]+)\s+장소:\s*([^\s]+)\s+사유:\s*([^\s]+)\s+시간:\s*(\d{4})/g
+
+  var match
+
+  while ((match = outingRegex.exec(outingSection)) !== null) {
+    const report = {
+      nameRank: match[1],
+      location: match[2],
+      reason: match[3],
+      time: match[4],
+    }
+    console.log(report)
+
+    reports.push(report)
+  }
+  // ... 외출자 데이터 파싱 로직
+  return reports
+}
+
 export default {
   data() {
     return {
@@ -73,7 +107,8 @@ export default {
   methods: {
     // 보고를 서버API로 보내는 메소드
     async submitReport() {
-      const reports = extractInfo(this.reportContent)
+      const reports = extractLeave(this.reportContent)
+      const outingReports = extractOuting(this.reportContent)
 
       try {
         const response = await fetch(
@@ -83,7 +118,7 @@ export default {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ reports }),
+            body: JSON.stringify({ reports, outingReports }),
           }
         )
 

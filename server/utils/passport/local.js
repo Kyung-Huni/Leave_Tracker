@@ -16,9 +16,6 @@ module.exports = () => {
           const exUser = await users.findOne({ where: { uid } })
 
           if (exUser) {
-            console.log('입력된 비밀번호:', password)
-            console.log('저장된 비밀번호:', exUser.password)
-
             const result = exUser.password === password
 
             if (result) {

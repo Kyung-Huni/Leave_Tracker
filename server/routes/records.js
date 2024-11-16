@@ -4,6 +4,7 @@ const { Op } = require('sequelize')
 
 const { records } = require('../models')
 const { members } = require('../models')
+const { outings } = require('../models')
 
 const unitColors = {
   '501 본부중대': '#6FA3EF', // 파란색
@@ -96,9 +97,13 @@ router.get('/today', async (req, res) => {
       },
     })
 
+    const outingResult = await outings.findAndCountAll({})
+
     return res.json({
       onLeaveResult: onLeaveResult.count,
       onPassResult: onPassResult.count,
+      outingResult: outingResult.rows,
+      outingCount: outingResult.count,
     })
   } catch (error) {
     console.error('Error fetching records: ', error)
@@ -109,9 +114,36 @@ router.get('/today', async (req, res) => {
 })
 
 router.post('/addInfo', async (req, res) => {
-  const { reports } = req.body
+  const { reports, outingReports } = req.body
 
   try {
+    if (outingReports) {
+      const outingPromisses = outingReports.map(async (outing) => {
+        const { nameRank, location, reason, time } = outing
+
+        const existingOuting = await outings.findOne({
+          where: {
+            nameRank,
+            location,
+            time,
+          },
+        })
+
+        if (existingOuting) {
+          return null
+        }
+
+        await outings.create({
+          nameRank: nameRank,
+          location: location,
+          reason: reason,
+          time: time,
+        })
+      })
+
+      await Promise.all(outingPromisses)
+    }
+
     const recordPromisses = reports.map(async (report) => {
       const {
         departureDate,
