@@ -38,7 +38,9 @@ export default {
       if (!this.$store.state.isAuthenticated) {
         this.$router.push('/login')
       } else {
-        await this.$axios.get('http://localhost:3000/api/v1.0/auth/logout')
+        await this.$axios.get(
+          'https://leave-tracker-y23h.onrender.com/api/auth/logout'
+        )
 
         this.$store.commit('setAuthentication', false)
 

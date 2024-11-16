@@ -30,7 +30,7 @@ export default {
 
   methods: {
     async login() {
-      const url = 'http://localhost:3000/api/v1.0/auth/login'
+      const url = 'https://leave-tracker-y23h.onrender.com/api/auth/login'
       try {
         const response = await axios.post(url, {
           uid: this.uid,

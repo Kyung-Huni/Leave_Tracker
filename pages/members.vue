@@ -34,7 +34,9 @@ export default {
   middleware: 'auth',
 
   async mounted() {
-    const response = await axios.get('http://localhost:3000/api/v1.0/members')
+    const response = await axios.get(
+      'https://leave-tracker-y23h.onrender.com/api/members'
+    )
     this.members = response.data.member
     this.unitCounts = response.data.unitCounts // 대대별 인원수 데이터
     this.totalCount = response.data.totalCount

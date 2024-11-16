@@ -56,7 +56,7 @@ export default {
     async registry() {
       try {
         const response = await fetch(
-          'http://localhost:3000/api/v1.0/members/registry',
+          'https://leave-tracker-y23h.onrender.com/api/members/registry',
           {
             method: 'POST',
             headers: {
