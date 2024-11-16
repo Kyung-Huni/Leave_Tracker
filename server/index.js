@@ -50,9 +50,6 @@ async function start() {
   // API 라우트 설정
   app.use('/api', routes)
 
-  // 모든 요청을 Nuxt로 전달
-  app.use(nuxt.render)
-
   server.listen(3000, () => {
     console.log('Server On Port : 3000')
   })
