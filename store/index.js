@@ -13,7 +13,7 @@ export const actions = {
   async checkSession({ commit }) {
     try {
       const response = await this.$axios.get(
-        'https://leave-tracker-y23h.onrender.com/api/auth/session-check'
+        'https://leave-tracker-7jkh.onrender.com/api/auth/session-check'
       )
       commit('setAuthentication', response.data.isAuthenticated)
     } catch (error) {

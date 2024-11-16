@@ -87,7 +87,7 @@ export default {
   methods: {
     async fetch() {
       const response = await this.$axios.get(
-        'https://leave-tracker-y23h.onrender.com/api/records',
+        'https://leave-tracker-7jkh.onrender.com/api/records',
         {
           params: {
             start: '2024-10-20',

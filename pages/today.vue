@@ -76,7 +76,7 @@ export default {
 
   async mounted() {
     const response = await axios.get(
-      'https://leave-tracker-y23h.onrender.com/api/records/today',
+      'https://leave-tracker-7jkh.onrender.com/api/records/today',
       {
         params: {
           todayDate: `${formattedDate}`,

@@ -6,8 +6,8 @@ const router = express.Router()
 router.post(
   '/login',
   passport.authenticate('local', {
-    successRedirect: '/api/v1.0/auth/login/success',
-    failureRedirect: '/api/v1.0/auth/login/fail',
+    successRedirect: '/api/auth/login/success',
+    failureRedirect: '/api/auth/login/fail',
   })
 )
 

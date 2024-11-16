@@ -112,7 +112,7 @@ export default {
 
       try {
         const response = await fetch(
-          'https://leave-tracker-y23h.onrender.com/api/records/addInfo',
+          'https://leave-tracker-7jkh.onrender.com/api/records/addInfo',
           {
             method: 'POST',
             headers: {

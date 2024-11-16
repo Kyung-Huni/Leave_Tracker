@@ -39,7 +39,7 @@ export default {
         this.$router.push('/login')
       } else {
         await this.$axios.get(
-          'https://leave-tracker-y23h.onrender.com/api/auth/logout'
+          'https://leave-tracker-7jkh.onrender.com/api/auth/logout'
         )
 
         this.$store.commit('setAuthentication', false)

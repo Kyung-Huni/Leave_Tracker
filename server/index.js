@@ -18,7 +18,7 @@ const passport = require('passport')
 const corsOptions = {
   origin: 'https://leave-tracker-livid.vercel.app',
   methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }
 app.use(cors(corsOptions))
 
