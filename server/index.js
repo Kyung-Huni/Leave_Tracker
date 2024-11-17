@@ -64,10 +64,16 @@ app.use(
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
       secure: true,
+      sameSite: 'none',
     },
     name: 'session-cookie',
   })
 )
+
+app.use((req, res, next) => {
+  console.log('세션 상태:', req.session)
+  next()
+})
 
 // passport-local 미들웨어 등록
 app.use(passport.initialize())
