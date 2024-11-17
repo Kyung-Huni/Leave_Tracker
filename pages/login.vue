@@ -44,11 +44,9 @@ export default {
           this.$store.commit('setAuthentication', true)
 
           const redirectPath = this.$route.query.redirect || '/'
-          this.$router
-            .push({
-              path: redirectPath,
-            })
-            .catch((err) => console.error('라우터 이동 실패: ', err))
+          this.$router.push({
+            path: redirectPath,
+          })
         } else if (response.status == 204) {
           alert('잘못된 정보입니다.')
         }
