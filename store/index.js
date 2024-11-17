@@ -18,11 +18,8 @@ export const actions = {
           withCredentials: true,
         }
       )
-      console.log(response.data.user)
-
       commit('setAuthentication', response.data.isAuthenticated)
     } catch (error) {
-      console.error('API 요청 오류:', error)
       commit('setAuthentication', false)
     }
   },

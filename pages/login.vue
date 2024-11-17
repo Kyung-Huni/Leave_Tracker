@@ -38,9 +38,10 @@ export default {
           withCredentials: true,
         })
 
+        console.log(response)
+
         if (response.status == 200) {
           this.$store.commit('setAuthentication', true)
-          console.log('Login 성공!')
 
           const redirectPath = this.$route.query.redirect || '/'
           this.$nuxt.$router
