@@ -48,7 +48,7 @@ export default {
             .push({
               path: redirectPath,
             })
-            .catch(() => {})
+            .catch((err) => console.error('라우터 이동 실패: ', err))
         } else if (response.status == 204) {
           alert('잘못된 정보입니다.')
         }
