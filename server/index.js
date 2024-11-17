@@ -5,26 +5,36 @@ const passportConfig = require('./utils/passport')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 
-const app = express()
-
 const http = require('http')
-const server = http.createServer(app)
-
-const config = require('../nuxt.config')
-const isDev = process.env.NODE_ENV !== 'production'
-
 const session = require('express-session')
 const RedisStore = require('connect-redis').default
 const redis = require('redis')
 
+const app = express()
+const server = http.createServer(app)
+const isDev = process.env.NODE_ENV !== 'production'
+
 const client = redis.createClient({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
+  socket: {
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+  },
   password: process.env.REDIS_PASSWORD,
-  logErrors: true,
 })
 
+client.on('error', (err) => {
+  console.error('Redis Client Error:', err)
+})(async () => {
+  try {
+    await client.connect()
+    console.log('Connected to Redis')
+  } catch (err) {
+    console.error('Redis connection error:', err)
+  }
+})()
+
 const passport = require('passport')
+passportConfig() // 패스포트 설정
 
 const corsOptions = {
   origin: 'https://leave-tracker-livid.vercel.app',
@@ -34,9 +44,8 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 
-passportConfig() // 패스포트 설정
-
 app.use(cookieParser(process.env.SECRET))
+
 app.use(
   session({
     secret: process.env.SECRET,
