@@ -22,14 +22,22 @@ const client = redis.createClient({
   password: process.env.REDIS_PASSWORD,
 })
 
+// 클라이언트 이벤트 등록
+client.on('connect', () => {
+  console.log('Redis connected successfully!')
+})
+
 client.on('error', (err) => {
-  console.error('Redis Client Error:', err)
-})(async () => {
+  console.error('Redis connection error:', err)
+})
+
+// 클라이언트 연결
+;(async () => {
   try {
-    await client.connect()
-    console.log('Connected to Redis')
+    await client.connect() // Redis 연결 시도
   } catch (err) {
-    console.error('Redis connection error:', err)
+    console.error('Failed to connect to Redis:', err)
+    process.exit(1) // 연결 실패 시 프로세스 종료
   }
 })()
 
