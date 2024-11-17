@@ -3,6 +3,7 @@ const { loadNuxt, build } = require('nuxt')
 const routes = require('./routes')
 const passportConfig = require('./utils/passport')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 const app = express()
 
@@ -35,6 +36,7 @@ app.use(cors(corsOptions))
 
 passportConfig() // 패스포트 설정
 
+app.use(cookieParser(process.env.SECRET))
 app.use(
   session({
     secret: process.env.SECRET,
@@ -46,6 +48,7 @@ app.use(
       httpOnly: true,
       secure: true,
     },
+    name: 'session-cookie',
   })
 )
 
