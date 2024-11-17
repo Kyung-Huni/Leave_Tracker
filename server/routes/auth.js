@@ -16,7 +16,8 @@ router.post(
 )
 
 router.get('/login/success', (req, res) => {
-  res.status(200).json({})
+  console.log('Success route reached, session:', req.session)
+  res.status(200).json({ success: true })
 })
 
 router.get('/login/fail', (req, res) => {
