@@ -32,11 +32,14 @@ export default {
     async login() {
       const url = 'https://leave-tracker-7jkh.onrender.com/api/auth/login'
       try {
-        const response = await axios.post(url, {
-          uid: this.uid,
-          password: this.password,
-          withCredentials: true,
-        })
+        const response = await axios.post(
+          url,
+          {
+            uid: this.uid,
+            password: this.password,
+          },
+          { withCredentials: true }
+        )
 
         console.log(response)
 
