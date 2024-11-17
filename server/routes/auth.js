@@ -8,8 +8,11 @@ router.post(
   passport.authenticate('local', {
     successRedirect: '/api/auth/login/success',
     failureRedirect: '/api/auth/login/fail',
-    failureFlash: true, // 실패 시, 오류 메시지를 플래시로 전달
-  })
+  }),
+  (req, res) => {
+    console.log('로그인 후 세션:', req.session) // 세션 데이터 확인
+    req.session.user = req.user // 로그인 정보 세션에 저장
+  }
 )
 
 router.get('/login/success', (req, res) => {
@@ -38,7 +41,7 @@ router.get('/logout', isLoggedIn, (req, res) => {
 })
 
 router.get('/session-check', (req, res) => {
-  if (req.session && req.user) {
+  if (req.session.user) {
     res.json({
       isAuthenticated: true,
       user: req.session.user,
