@@ -44,7 +44,7 @@ export default {
           this.$store.commit('setAuthentication', true)
 
           const redirectPath = this.$route.query.redirect || '/'
-          this.$nuxt.$router
+          this.$router
             .push({
               path: redirectPath,
             })
