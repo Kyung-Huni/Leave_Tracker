@@ -8,16 +8,18 @@ router.post(
   passport.authenticate('local', {
     successRedirect: '/api/auth/login/success',
     failureRedirect: '/api/auth/login/fail',
-  }),
-  (req, res) => {
-    console.log('로그인 후 세션:', req.session) // 세션 데이터 확인
-    req.session.user = req.body.uid // 로그인 정보 세션에 저장
-  }
+  })
 )
 
 router.get('/login/success', (req, res) => {
-  console.log('Success route reached, session:', req.session)
-  res.status(200).json({ success: true })
+  if (req.user) {
+    req.session.user = req.user.id // 인증된 사용자 정보 저장
+    console.log('Success route reached, session:', req.session)
+
+    res.status(200).json({ success: true })
+  } else {
+    res.status(401).json({ message: 'Unauthorized' })
+  }
 })
 
 router.get('/login/fail', (req, res) => {
