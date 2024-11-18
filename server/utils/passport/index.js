@@ -13,10 +13,15 @@ module.exports = () => {
   })
 
   passport.deserializeUser((id, done) => {
-    // 세션에서 uid를 받아서 다시 데이터베이스에서 사용자 조회
+    console.log('Deserialize ID:', id) // 세션에서 가져온 사용자 ID 출력
     users
       .findOne({ where: { id } })
-      .then((user) => done(null, user))
+      .then((user) => {
+        if (!user) {
+          return done(new Error('User not found'), null)
+        }
+        done(null, user)
+      })
       .catch((err) => done(err))
   })
 
