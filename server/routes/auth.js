@@ -3,27 +3,17 @@ const passport = require('passport')
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares') // 내가 만든 사용자 미들웨어
 const router = express.Router()
 
-router.post(
-  '/login',
-  passport.authenticate('local', {
-    successRedirect: '/api/auth/login/success',
-    failureRedirect: '/api/auth/login/fail',
-  })
-)
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err)
+    if (!user) return res.status(401).json({ message: 'Unauthorized' })
 
-router.get('/login/success', (req, res) => {
-  if (req.user) {
-    req.session.user = req.user.id // 인증된 사용자 정보 저장
-    console.log('Success route reached, session:', req.session)
-
-    res.status(200).json({ success: true })
-  } else {
-    res.status(401).json({ message: 'Unauthorized' })
-  }
-})
-
-router.get('/login/fail', (req, res) => {
-  res.status(204).json({})
+    req.logIn(user, (err) => {
+      if (err) return next(err)
+      console.log('Logged in user:', req.user) // req.user 확인
+      return res.status(200).json({ message: 'Login successful' })
+    })
+  })(req, res, next)
 })
 
 //* 로그아웃 (isLoggedIn 상태일 경우)

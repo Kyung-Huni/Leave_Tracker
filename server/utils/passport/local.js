@@ -17,6 +17,7 @@ module.exports = () => {
 
           if (exUser) {
             const result = exUser.password === password
+            console.log('Login result: ', result)
 
             if (result) {
               done(null, exUser)
