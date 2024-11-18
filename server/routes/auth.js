@@ -11,7 +11,7 @@ router.post(
   }),
   (req, res) => {
     console.log('로그인 후 세션:', req.session) // 세션 데이터 확인
-    req.session.user = req.user // 로그인 정보 세션에 저장
+    req.session.user = req.body.uid // 로그인 정보 세션에 저장
   }
 )
 
