@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser')
 const http = require('http')
 const session = require('express-session')
 const { createClient } = require('redis')
+const RedisStore = require('connect-redis').default
 
 const app = express()
 const server = http.createServer(app)
