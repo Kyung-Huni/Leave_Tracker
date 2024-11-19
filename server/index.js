@@ -46,7 +46,7 @@ const passport = require('passport')
 passportConfig() // 패스포트 설정
 
 const corsOptions = {
-  origin: true,
+  origin: 'https://leave-tracker-livid.vercel.app',
   credentials: true, // 쿠키 전송을 허용
 }
 app.use(cors(corsOptions))
