@@ -9,6 +9,7 @@ module.exports = () => {
       // 사용자 정보가 없으면 세션에 저장하지 않음
       return done(new Error('User not found'), null)
     }
+    console.log('Serialized user:', user) // user 객체 확인
     done(null, user.id) // 세션에 사용자 uid만 저장
   })
 

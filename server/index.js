@@ -7,39 +7,19 @@ const cookieParser = require('cookie-parser')
 
 const http = require('http')
 const session = require('express-session')
-const RedisStore = require('connect-redis').default
-const redis = require('redis')
+const { createClient } = require('redis')
 
 const app = express()
 const server = http.createServer(app)
 const isDev = process.env.NODE_ENV !== 'production'
 
-const client = redis.createClient({
+const client = createClient({
+  password: process.env.REDIS_PASSWORD,
   socket: {
     host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT,
   },
-  password: process.env.REDIS_PASSWORD,
 })
-
-// 클라이언트 이벤트 등록
-client.on('connect', () => {
-  console.log('Redis connected successfully!')
-})
-
-client.on('error', (err) => {
-  console.error('Redis connection error:', err)
-})
-
-// 클라이언트 연결
-;(async () => {
-  try {
-    await client.connect() // Redis 연결 시도
-  } catch (err) {
-    console.error('Failed to connect to Redis:', err)
-    process.exit(1) // 연결 실패 시 프로세스 종료
-  }
-})()
 
 const passport = require('passport')
 passportConfig() // 패스포트 설정
