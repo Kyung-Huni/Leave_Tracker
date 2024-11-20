@@ -23,6 +23,22 @@ const client = redis.createClient({
   },
 })
 
+;(async () => {
+  await client.connect()
+
+  // 모든 키 조회
+  const keys = await client.keys('*')
+  console.log('Redis Keys:', keys)
+
+  // 특정 키 데이터 조회
+  if (keys.length > 0) {
+    const sessionData = await client.get(keys[0])
+    console.log(`Session Data for ${keys[0]}:`, sessionData)
+  }
+
+  await client.quit()
+})()
+
 // 클라이언트 이벤트 등록
 client.on('connect', () => {
   console.log('Redis connected successfully!')
