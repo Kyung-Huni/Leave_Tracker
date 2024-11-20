@@ -16,10 +16,8 @@ router.post('/login', (req, res, next) => {
 
       console.log('Logged in user:', req.user) // req.user 확인
       req.session.user = user // 세션 데이터 추가
-      req.session.save((err) => {
-        if (err) return next(err)
-        res.status(200).send('Login successful')
-      })
+      console.log('Logged in Session:', req.session.user) // req.user 확인
+      res.status(200).send('Login successful')
     })
   })(req, res, next)
 })
