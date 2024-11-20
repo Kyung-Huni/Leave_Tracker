@@ -23,6 +23,13 @@ const client = redis.createClient({
   },
 })
 
+client.on('error', (err) => console.error('Redis Error:', err))
+
+// 연결
+;(async () => {
+  await client.connect()
+})()
+
 const passport = require('passport')
 passportConfig() // 패스포트 설정
 
