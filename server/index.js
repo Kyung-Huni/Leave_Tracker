@@ -23,22 +23,6 @@ const client = redis.createClient({
   },
 })
 
-;(async () => {
-  await client.connect()
-
-  // 모든 키 조회
-  const keys = await client.keys('*')
-  console.log('Redis Keys:', keys)
-
-  // 특정 키 데이터 조회
-  if (keys.length > 0) {
-    const sessionData = await client.get(keys[0])
-    console.log(`Session Data for ${keys[0]}:`, sessionData)
-  }
-
-  await client.quit()
-})()
-
 const passport = require('passport')
 passportConfig() // 패스포트 설정
 
@@ -66,11 +50,6 @@ app.use(
     name: 'session-cookie',
   })
 )
-
-app.use((req, res, next) => {
-  console.log('세션 상태:', req.session)
-  next()
-})
 
 // passport-local 미들웨어 등록
 app.use(passport.initialize())
