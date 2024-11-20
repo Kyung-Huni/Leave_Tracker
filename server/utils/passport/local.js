@@ -9,21 +9,23 @@ module.exports = () => {
       {
         usernameField: 'uid',
         passwordField: 'password',
-        passReqToCallback: true,
+        passReqToCallback: false,
       },
       async (uid, password, done) => {
         try {
-          const exUser = await users.findOne({ where: { uid: uid }, raw: true })
+          const exUser = await users.findOne({ where: { uid: uid } })
 
           if (exUser) {
             const result = exUser.password == password
+            console.log('User found:', exUser)
+            console.log('Checking user:', uid)
             console.log('Login result: ', result)
 
             if (result) {
               done(null, {
-                uid: result['uid'],
-                id: result['id'],
-                status: result['status'],
+                uid: exUser.uid,
+                id: exUser.id,
+                status: exUser.status,
               })
             } else {
               done(null, false, { message: '비밀번호가 일치하지 않습니다.' })
