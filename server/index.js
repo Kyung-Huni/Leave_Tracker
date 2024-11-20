@@ -39,25 +39,6 @@ const client = redis.createClient({
   await client.quit()
 })()
 
-// 클라이언트 이벤트 등록
-client.on('connect', () => {
-  console.log('Redis connected successfully!')
-})
-
-client.on('error', (err) => {
-  console.error('Redis connection error:', err)
-})
-
-// 클라이언트 연결
-;(async () => {
-  try {
-    await client.connect() // Redis 연결 시도
-  } catch (err) {
-    console.error('Failed to connect to Redis:', err)
-    process.exit(1) // 연결 실패 시 프로세스 종료
-  }
-})()
-
 const passport = require('passport')
 passportConfig() // 패스포트 설정
 
