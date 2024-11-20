@@ -1,15 +1,34 @@
 const LocalStrategy = require('passport-local').Strategy
-const passport = require('passport')
+const { users } = require('../models')
 
-const { users } = require('../../models')
+exports.config = (passport) => {
+  passport.serializeUser((user, done) => {
+    if (!user || !user.id) {
+      // 사용자 정보가 없으면 세션에 저장하지 않음
+      return done(new Error('User not found'), null)
+    }
+    console.log('Serialized user:', user) // user 객체 확인
+    done(null, user.id) // 세션에 사용자 uid만 저장
+  })
 
-module.exports = () => {
+  passport.deserializeUser((id, done) => {
+    console.log('Deserialize ID:', id) // 세션에서 가져온 사용자 ID 출력
+    users
+      .findOne({ where: { id } })
+      .then((user) => {
+        if (!user) {
+          return done(new Error('User not found'), null)
+        }
+        done(null, user.uid)
+      })
+      .catch((err) => done(err))
+  })
+
   passport.use(
     new LocalStrategy(
       {
         usernameField: 'uid',
         passwordField: 'password',
-        passReqToCallback: false,
       },
       async (uid, password, done) => {
         try {

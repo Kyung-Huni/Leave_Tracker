@@ -4,14 +4,17 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares') // 내가 만든 
 const router = express.Router()
 
 router.post('/login', (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/')
+  }
   passport.authenticate('local', (err, user, info) => {
     if (err) return next(err)
     if (!user) return res.status(401).json({ message: 'Unauthorized' })
 
-    req.logIn(user, (err) => {
+    return req.login(user, (err) => {
       if (err) return next(err)
-      console.log('Logged in user:', req.user) // req.user 확인
 
+      console.log('Logged in user:', req.user) // req.user 확인
       req.session.user = user // 세션 데이터 추가
       req.session.save((err) => {
         if (err) return next(err)
